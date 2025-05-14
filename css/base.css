@@ -1,0 +1,36 @@
+/* base.css - 全体に適用される基本スタイル */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+main {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.text-glow {
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,21 @@
+/* weather.css - 天気ウィジェット用スタイル */
+
+.weather-widget {
+    position: absolute;
+    top: 1rem;
+    left: 80%; /* ← 初期位置は右寄りに */
+    /* right: 1.5rem; ← これを削除 */
+    text-align: right;
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
+    touch-action: none;
+}
+
+.weather-icon {
+    width: 48px;
+    height: 48px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}

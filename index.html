@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Mirror</title>
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/widgets/clock.css" />
+    <link rel="stylesheet" href="./css/widgets/weather.css" />
+</head>
+<body>
+<main>
+    <div class="widget clock-widget" id="clock-widget">
+        <div class="date-container">
+            <div class="date-left">
+                <div class="wareki" id="wareki">令和--年</div>
+                <div class="gregorianYear" id="gregorianYear">----</div>
+            </div>
+            <div class="date-right">
+                <div class="month-day" id="month-day">--月--日(--)</div>
+                <div class="clock" id="clock">--:--</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget weather-widget" id="weather-widget">
+        <div id="weather">天気読み込み中...</div>
+    </div>
+</main>
+
+<script src="./node_modules/dayjs/dayjs.min.js"></script>
+<script src="./node_modules/dayjs/locale/ja.js"></script>
+<script src="./config/env-config.js"></script>
+<script src="./config/settings.js"></script>
+<script src="./node_modules/interactjs/dist/interact.js"></script>
+<script src="./js/draggable.js"></script>
+<script src="./js/clock.js"></script>
+<script src="./js/weather.js"></script>
+<script>
+  // Set the locale to Japanese
+  dayjs.locale('ja');
+</script>
+
+</body>
+</html>
