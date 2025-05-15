@@ -3,10 +3,10 @@
  */
 const ENV = {
   /*
-  * WeatherAppのAPI KEY設定
-  * https://home.openweathermap.org/users/sign_in
-  * OpenWeatherMapのAPIキーを取得するには、上記のURLにアクセスしてアカウントを作成してください。
+  * weatherapiのAPI KEY設定
+  * https://www.weatherapi.com/
+  * weatherapiのAPIキーを取得するには、上記のURLにアクセスしてアカウントを作成してください。
   * APIキーは、アカウント作成後にダッシュボードから取得できます。
   */
-  OPENWEATHER_API_KEY: "YOUR-API-KEY-HERE"
+  WEATHERAPI_KEY: "YOUR-API-KEY-HERE"
 };

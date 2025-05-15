@@ -7,9 +7,7 @@
 */
 const WEATHER_CONFIG = {
   // OpenWeatherMapのAPIキー
-  apiKey: ENV.OPENWEATHER_API_KEY,
-  city: "Tokyo",
-  // "metric" for 摂氏（℃）, "imperial" 華氏（°F）default: "standard" ケルビン (K)
-  units: "metric",
+  apiKey: ENV.WEATHERAPI_KEY,
+  location: ENV.LOCATION,
   lang: "ja"
 };

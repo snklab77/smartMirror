@@ -1,21 +1,153 @@
-/* weather.css - 天気ウィジェット用スタイル */
-
 .weather-widget {
     position: absolute;
-    top: 1rem;
-    left: 80%; /* ← 初期位置は右寄りに */
-    /* right: 1.5rem; ← これを削除 */
-    text-align: right;
-    font-size: 1.3rem;
-    font-weight: 300;
-    color: rgba(255, 255, 255, 0.85);
-    text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
     touch-action: none;
 }
 
-.weather-icon {
+/* デフォルト位置のクラス */
+.weather-widget:not(.dragged) {
+    bottom: 2rem;
+    left: 2rem;
+}
+
+/* ドラッグ済みの場合は position: absolute のままで
+   transform で位置を制御 */
+.current-weather {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* 現在の天気（上部）のスタイル */
+.current-weather .temperature {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.current-weather .temp-range {
+    font-size: 3em;  /* より大きなサイズに */
+    font-weight: 400;
+}
+
+.current-weather .weather-icon {
+    width: 96px;
+    height: 96px;
+}
+
+.current-weather .description {
+    font-size: 1.2em;
+}
+
+.weather-widget .description {
+    text-align: center;
+    width: 100%;  /* 親要素の幅いっぱいに広げる */
+}
+
+/* 現在の天気と予報それぞれの天気説明に適用 */
+.current-weather .description,
+.forecast-item .description {
+    text-align: center;
+    width: 100%;
+}
+
+/* 予報全体のコンテナ */
+.forecast {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    opacity: 0.8;  /* 下部全体を少し薄く */
+}
+
+/* 各予報アイテム */
+.forecast-item {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px; /* 最小幅を少し小さくする */
+    padding: 0 0.5rem; /* 左右に少しパディングを追加 */
+}
+
+/* 日付表示 */
+.forecast-item .date {
+    margin-bottom: 0.5rem;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+/* 天気アイコンのサイズも調整 */
+.forecast-item .weather-icon {
     width: 48px;
     height: 48px;
-    vertical-align: middle;
-    margin-right: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+/* 予報（下部）のスタイル */
+.forecast-item .temperature {
+    font-size: 0.8em;
+}
+
+/* 天気説明 */
+.forecast-item .description {
+    text-align: center;
+    width: 100%;
+    font-size: 0.8em;
+}
+.temperature {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.temp-range {
+    font-size: 1.1em;  /* または必要なサイズに調整 */
+}
+@keyframes jellyWobble {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.15, 0.95);
+    }
+    50% {
+        transform: scale(0.95, 1.15);
+    }
+    75% {
+        transform: scale(1.12, 0.98);
+    }
+}
+
+.weather-icon {
+    width: 64px;
+    height: 64px;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+    animation: jellyWobble 4s ease-in-out infinite;
+}
+
+.current-weather .weather-icon {
+    width: 96px;
+    height: 96px;
+}
+
+.forecast-item .weather-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0.5rem 0;
+    /* 予報アイコンは少し遅れて揺れ始めるように */
+    animation-delay: 0.2s;
+}
+
+/* 明後日の予報はさらに遅れて */
+.forecast-item:last-child .weather-icon {
+    animation-delay: 0.4s;
 }
