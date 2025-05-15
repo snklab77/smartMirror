@@ -11,25 +11,30 @@ interact('.widget').draggable({
     start(event) {
       const target = event.target;
       target.classList.add('dragging');
-
-      if (!target.dataset.x) {
-        const computed = window.getComputedStyle(target);
-        target.style.left = computed.left;
-        target.style.top = computed.top;
-        target.dataset.x = parseFloat(computed.left).toString();
-        target.dataset.y = parseFloat(computed.top).toString();
-      }
     },
     move (event) {
       const target = event.target;
-      const x = (parseFloat(target.dataset.x) || 0) + event.dx;
-      const y = (parseFloat(target.dataset.y) || 0) + event.dy;
 
-      target.style.left = `${x}px`;
-      target.style.top = `${y}px`;
+      // ドラッグ開始時の位置を保存
+      if (!target.classList.contains('dragged')) {
+        target.classList.add('dragged');
+        const rect = target.getBoundingClientRect();
+        target.style.transform = 'translate(0px, 0px)';
+        // 固定位置から絶対位置に変更
+        target.style.bottom = '';
+        target.style.left = '';
+        target.style.top = `${rect.top}px`;
+        target.style.left = `${rect.left}px`;
+      }
 
-      target.dataset.x = x.toString();
-      target.dataset.y = y.toString();
+      // 現在の transform 値を取得
+      const transform = target.style.transform;
+      const matrix = new DOMMatrix(transform);
+      const currentX = matrix.m41;
+      const currentY = matrix.m42;
+
+      // 新しい位置を計算して適用
+      target.style.transform = `translate(${currentX + event.dx}px, ${currentY + event.dy}px)`;
     },
     end (event) {
       const target = event.target;
@@ -38,4 +43,11 @@ interact('.widget').draggable({
   }
 });
 
-
+// ページロード時にドラッグ状態をリセット
+document.addEventListener('DOMContentLoaded', () => {
+  const widgets = document.querySelectorAll('.widget');
+  widgets.forEach(widget => {
+    widget.classList.remove('dragged');
+    widget.style.transform = '';
+  });
+});
