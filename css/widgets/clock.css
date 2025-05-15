@@ -1,46 +1,37 @@
-/* clock.css - 時計ウィジェット専用スタイル */
 .clock-widget {
     position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    z-index: 10;
-    touch-action: none; /* ドラッグ操作のため追加 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    touch-action: none;
 }
 
-
 .date-container {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.6rem;
-    text-align: center;
+    gap: 1rem;
 }
 
-.date-left, .date-right {
+.date-line {
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    gap: 2rem;
-}
-
-.gregorianYear, .wareki {
-    font-size: 1.8rem;
+    gap: 2rem;  /* 各要素間の間隔 */
+    font-size: 2.2rem;
     font-weight: 300;
 }
 
-.month-day {
-    font-size: 1.5rem;
-    font-weight: 300;
+.wareki, .gregorianYear, .month-day {
+    white-space: nowrap;
 }
 
 .clock {
-    font-size: 4rem;
+    font-size: 6rem;
     font-weight: 200;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    font-family: 'Noto Sans Mono', 'Segoe UI', 'Helvetica Neue', sans-serif;
+    min-width: 11ch;
+    text-align: center;
 }

@@ -7,24 +7,47 @@
     <link rel="stylesheet" href="./css/base.css" />
     <link rel="stylesheet" href="./css/widgets/clock.css" />
     <link rel="stylesheet" href="./css/widgets/weather.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@200;300;400&display=swap" rel="stylesheet">
 </head>
 <body>
 <main>
     <div class="widget clock-widget" id="clock-widget">
         <div class="date-container">
-            <div class="date-left">
-                <div class="wareki" id="wareki">令和--年</div>
-                <div class="gregorianYear" id="gregorianYear">----</div>
+            <div class="date-line">
+                <span class="wareki" id="wareki">令和--年</span>
+                <span class="gregorianYear" id="gregorianYear">----年</span>
+                <span class="month-day" id="month-day">--月--日(--)</span>
             </div>
-            <div class="date-right">
-                <div class="month-day" id="month-day">--月--日(--)</div>
-                <div class="clock" id="clock">--:--</div>
-            </div>
+            <div class="clock" id="clock">--:--:--</div>
         </div>
     </div>
 
     <div class="widget weather-widget" id="weather-widget">
-        <div id="weather">天気読み込み中...</div>
+        <div class="current-weather">
+            <img class="weather-icon" src="" alt="現在の天気">
+            <div class="temperature">
+                <span class="temp-range">--°C/--°C</span>
+            </div>
+            <div class="description">天気読み込み中...</div>
+        </div>
+        <div class="forecast">
+            <div class="forecast-item">
+                <div class="date">明日</div>
+                <img class="weather-icon" src="" alt="明日の天気">
+                <div class="temperature">
+                    <span class="max">--°C</span>
+                </div>
+                <div class="description">...</div>
+            </div>
+            <div class="forecast-item">
+                <div class="date">明後日</div>
+                <img class="weather-icon" src="" alt="明後日の天気">
+                <div class="temperature">
+                    <span class="max">--°C</span>
+                </div>
+                <div class="description">...</div>
+            </div>
+        </div>
     </div>
 </main>
 

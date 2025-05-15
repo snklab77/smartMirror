@@ -19,9 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const now = dayjs();
 
     const wareki = getWareki(now.year());
-    const gregorianYear = `${now.year()}`;
+    const gregorianYear = `${now.year()}年`;
     const dateLabel = now.format('M月D日(dd)');
-    const timeStr = now.format('HH:mm');
+    const timeStr = now.format('HH:mm:ss');
 
     if (warekiEl) warekiEl.textContent = wareki;
     if (gregorianEl) gregorianEl.textContent = gregorianYear;
