@@ -4,7 +4,7 @@ import socketserver
 import os
 
 PORT = 8000
-DOCROOT = "/home/smartMiiler"
+DOCROOT = "/home/snk/smartMirror"
 
 os.chdir(DOCROOT)
 

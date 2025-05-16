@@ -30,13 +30,13 @@ Raspberry Pi Zero 2 W 用の軽量HTML/CSS/JS製スマートミラーUIです。
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/snklab77/smartMiiler.git
+git clone https://github.com/snklab77/smartMirror.git
 ```
 
 2. Install dependencies:
 
 ```bash
-cd smart-mirror
+cd smartMirror
 npm install
 ```
 
