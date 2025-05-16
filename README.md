@@ -1,4 +1,4 @@
-# Smart Mirror
+# Smart Mirror (Raspberry Pi Zero 2 W Edition)
 
 A lightweight HTML/CSS/JS-based smart mirror UI for Raspberry Pi Zero 2 W.   
 Displays clock, weather, and optionally controls display power using a motion sensor.  
@@ -8,23 +8,21 @@ The compact size of the Zero 2 W makes it perfect for concealing behind the mirr
 Due to the limited CPU and memory resources, special consideration has been given to using lightweight tools and avoiding heavy browsers like Chromium.  
 The project is built primarily with vanilla JS, HTML, and CSS, deliberately avoiding heavy frameworks. Python is used only for the HTTP server and motion sensor control.  
 
-Raspberry Pi Zero 2 W 用の軽量HTML/CSS/JS製スマートミラーUIです。時刻や天気を表示し、人感センサーと連動させることも可能です。
-主に日本国内の日本語話者向けに書いていますが少しカスタムすればどこの国の方でも使って頂けると思います。
-世間ではraspberry pi 4/5を使ったスマートミラーの情報が多くありますが、私のように安価なRaspberry Pi Zero 2 Wを使いたい方もいると思います。  
-(ラズパイ4/5だとsmart mirror用途では少しオーバースペックすぎるし、高すぎる)  
+Raspberry Pi Zero 2 W 用の軽量HTML/CSS/JS製スマートミラーUIです。時刻や天気を表示し、人感センサーと連動させることも可能です。  
+主に日本国内の日本語話者向けに書いていますが少しカスタムすればどこの国の方でも使って頂けると思います。  
+
+世間ではraspberry pi 4/5を使ったスマートミラーの情報が多くありますが、私のように安価なRaspberry Pi Zero 2 Wを使いたい方もいると思います。(ラズパイ4/5だとsmart mirror用途では少しオーバースペックすぎるし、高すぎる)  
 小さいのでミラー裏にうまく仕込むにも適しています。  
 
 ただし、chromium等重いブラウザを使うにはメモリもCPUも貧弱なので可能な限り軽量なツールを使う用に工夫しました。
 
 プログラムは主にjs + html + cssを使って書いています。  
 重いフレームワーク等は使わずプレーンなコードを心掛けました。  
-pythonはhttpサーバーと人感センサーの制御に使用しています。  
-
-なお、このプログラムを利用して
+pythonはhttpサーバーと人感センサーの制御に使用しています。
 
 <img src="./docs/images/SmartMirror.png" width="400" alt="Smart Mirror Preview">
 
-## Repository
+## Repository / リポジトリ
 
 ```bash
 # Using HTTPS
@@ -34,14 +32,14 @@ git clone https://github.com/snklab77/smartMirror.git
 git clone git@github.com:snklab77/smartMirror.git
 ```
 
-## Features
+## Features / 機能
 
 - Clock display (clock.js)
 - Weather information (weather.js + WeatherAPI.com)
 - Motion sensor-controlled display power (sensor.js)
 - Black background + minimal UI
 
-## Requirements
+## Requirements / 必要なもの
 
 - Raspberry Pi Zero 2 W
 - Raspberry Pi OS Lite (32bit)
@@ -50,7 +48,7 @@ git clone git@github.com:snklab77/smartMirror.git
 - Python 3.x
 - GPIO-related packages (gpiozero)
 
-## Installation
+## Installation / インストール
 
 1. Clone the repository:
 ```bash
@@ -88,7 +86,7 @@ sudo chmod +x /usr/local/bin/motion_screen_control.py
 sudo chmod +x /usr/local/bin/smartmirror_server.py
 ```
 
-## Setup Guide
+## Setup Guide / セットアップガイド
 
 ### 1. Boot Configuration
 Add to `/boot/firmware/config.txt`:
@@ -179,7 +177,7 @@ Users are advised to:
 - 改変はご自身の責任で行ってください
 
 
-## License
+## License / ライセンス
 
 This project is released under the MIT License - feel free to modify and use it as you wish.
 
