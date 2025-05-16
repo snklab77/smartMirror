@@ -30,7 +30,6 @@
 .clock {
     font-size: 6rem;
     font-weight: 200;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
     font-family: 'Noto Sans Mono', 'Segoe UI', 'Helvetica Neue', sans-serif;
     min-width: 11ch;
     text-align: center;
