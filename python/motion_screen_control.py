@@ -7,9 +7,9 @@ import sys
 
 try:
     os.environ["DISPLAY"] = ":0"
-    pir = MotionSensor(18)
+    pir = MotionSensor(17) # GPIO17 = ピン11
     last_motion = time()
-    display_on = False
+    display_on = True
     OFF_DELAY = 300  # 秒（例：5分）
 
     def turn_display(on: bool):
@@ -17,9 +17,9 @@ try:
         if display_on == on:
             return
         cmd = (
-            "xrandr --output HDMI-1 --auto"
+            "DISPLAY=:0 xset dpms force on"
             if on else
-            "xrandr --output HDMI-1 --off"
+            "DISPLAY=:0 xset dpms force off"
         )
         os.system(cmd)
         print(f"{'ON' if on else 'OFF'} at {time()}")
