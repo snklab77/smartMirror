@@ -11,6 +11,7 @@ try:
     last_motion = time()
     display_on = True
     OFF_DELAY = 300  # 秒（例：5分）
+    RECOVERY_THRESHOLD = 600  # 無反応で再起動（例：10分）
 
     def turn_display(on: bool):
         global display_on
@@ -22,17 +23,25 @@ try:
             "DISPLAY=:0 xset dpms force off"
         )
         os.system(cmd)
-        print(f"{'ON' if on else 'OFF'} at {time()}")
+        print(f"{'ON' if on else 'OFF'} at {time()}", flush=True)
         display_on = on
 
     print("センサー監視開始...", flush=True)
 
     while True:
+        now = time()
+
         if pir.motion_detected:
-            last_motion = time()
+            last_motion = now
             turn_display(True)
-        elif time() - last_motion > OFF_DELAY:
+        elif now - last_motion > OFF_DELAY:
             turn_display(False)
+
+        # 無反応リカバリ（display_offのまま何も起きない）
+        if not display_on and (now - last_motion > RECOVERY_THRESHOLD):
+            print("[INFO] 無反応時間が閾値を超過 → 自己再起動します", flush=True)
+            os.execv(sys.executable, ['python3'] + sys.argv)
+
         sleep(1)
 
 except Exception as e:

@@ -74,3 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const WEATHER_UPDATE_INTERVAL = 30 * 60 * 1000; // 30分
     setInterval(updateWeatherDisplay, WEATHER_UPDATE_INTERVAL);
 });
+
+setInterval(() => {
+    // pi zero 2wだとanimationでCPU100%になるので、1分ごとにリセット
+    document.querySelectorAll('.weather-icon').forEach(el => {
+        el.classList.remove('animate-pulse');
+        void el.offsetWidth;
+        el.classList.add('animate-pulse');
+    });
+}, 60000); // 1分ごと

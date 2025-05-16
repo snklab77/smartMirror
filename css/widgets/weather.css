@@ -131,7 +131,10 @@
     height: 64px;
     filter: brightness(0) invert(1);
     opacity: 0.9;
-    animation: jellyWobble 4s ease-in-out infinite;
+    /* animation: jellyWobble 4s ease-in-out infinite;*/
+}
+.weather-icon.animate-pulse {
+    animation: jellyWobble 4s ease-in-out 5;
 }
 
 .current-weather .weather-icon {
