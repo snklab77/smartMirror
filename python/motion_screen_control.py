@@ -7,7 +7,7 @@ import sys
 
 try:
     os.environ["DISPLAY"] = ":0"
-    pir = MotionSensor(17) # GPIO17 = ピン11
+    pir = MotionSensor(17, queue_len=1, threshold=0.5) # GPIO17 = ピン11
     last_motion = time()
     display_on = True
     OFF_DELAY = 300  # 秒（例：5分）
@@ -28,16 +28,21 @@ try:
 
     print("センサー監視開始...", flush=True)
 
+    # ✅ イベントで last_motion を更新
+    def update_last_motion():
+        global last_motion
+        last_motion = time()
+    pir.when_no_motion = update_last_motion
+
     while True:
         now = time()
 
-        if pir.motion_detected:
-            last_motion = now
+        # ✅ イベントから1秒以内なら反応があったとみなす
+        if now - last_motion < 1:
             turn_display(True)
         elif now - last_motion > OFF_DELAY:
             turn_display(False)
 
-        # 無反応リカバリ（display_offのまま何も起きない）
         if not display_on and (now - last_motion > RECOVERY_THRESHOLD):
             print("[INFO] 無反応時間が閾値を超過 → 自己再起動します", flush=True)
             os.execv(sys.executable, ['python3'] + sys.argv)
