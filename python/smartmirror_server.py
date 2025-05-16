@@ -4,7 +4,8 @@ import socketserver
 import os
 
 PORT = 8000
-DOCROOT = "/home/snk/smartMirror"
+# Set the document root to your smart mirror directory
+DOCROOT = "/home/[your username]/smartMirror"
 
 os.chdir(DOCROOT)
 
