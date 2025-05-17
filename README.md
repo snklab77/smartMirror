@@ -113,13 +113,6 @@ window.init_funcs = {
         w.infobar.visible = false
     end
 ```
-serviceへ登録
-```bash
-sudo systemctl daemon-reexec
-sudo systemctl daemon-reload
-sudo systemctl enable luakit-watchdog.service
-sudo systemctl start luakit-watchdog.service
-```
 
 ## Setup Guide / セットアップガイド
 
@@ -218,6 +211,15 @@ while true; do
 done
 ```
 `sudo chmod +x /usr/local/bin/luakit_watchdog.sh`
+
+serviceへ登録
+```bash
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable luakit-watchdog.service
+sudo systemctl start luakit-watchdog.service
+```
+
 
 ※ Since I am writing this while performing actual hardware testing, there may be errors, omissions, or deficiencies.  
 If you find any, please let me know.  
