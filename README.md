@@ -174,59 +174,8 @@ sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl enable smartmirror-xinit.service
 ```
-3. luakit monitor service / luakitの監視サービス  
-   luakitプロセスが死んだ場合に備える復帰処置  
 
-create: `/etc/systemd/system/luakit-watchdog.service`
-```service
-[Unit]
-Description=Luakit watchdog to relaunch on crash
-After=smartmirror-xinit.service
-Requires=smartmirror-xinit.service
-
-[Service]
-User=[your username]
-**ExecStartPre=/bin/sleep 10** # luakit自体が起動するまで待機
-ExecStart=/usr/local/bin/luakit_watchdog.sh
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-```
-
-create: `/usr/local/bin/luakit_watchdog.sh`
-
-```bash
-#!/bin/bash
-
-export DISPLAY=:0
-export LANG=ja_JP.UTF-8
-
-while true; do
-  if ! pgrep -x "luakit" > /dev/null; then
-    echo "[`date`] luakit not running. Restarting..." >> /tmp/luakit_watch.log
-    luakit -U http://localhost:8000 &
-  fi
-  # Check memory usage
-  mem=$(free -m | awk '/^Mem:/ { print $3 }')
-  if [ "$mem" -gt 400 ]; then
-    echo "[`date`] [WARN] memory usage high (${mem}MB) → restarting luakit" >> /tmp/luakit_watch.log    pkill -f luakit
-    luakit -U http://localhost:8000 &
-  fi
-  sleep 10
-done
-```
-`sudo chmod +x /usr/local/bin/luakit_watchdog.sh`
-
-serviceへ登録
-```bash
-sudo systemctl daemon-reexec
-sudo systemctl daemon-reload
-sudo systemctl enable luakit-watchdog.service
-sudo systemctl start luakit-watchdog.service
-```
-4.reboot timer / 再起動タイマー  
+3.reboot timer / 再起動タイマー  
    ループで動かすとメモリリークが発生するので、定期的に再起動する
    毎日AM3:00に再起動
    `/etc/systemd/system/smartmirror-xinit-restart.timer`
