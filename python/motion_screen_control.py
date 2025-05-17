@@ -2,13 +2,19 @@
 
 from gpiozero import MotionSensor
 from time import time, sleep
+import subprocess
 import os
 import sys
 
 try:
     os.environ["DISPLAY"] = ":0"
-    pir = MotionSensor(17, queue_len=1, threshold=0.5) # GPIO17 = ピン11
+
     last_motion = time()
+    print("センサー初期化中...", flush=True)
+    pir = MotionSensor(17, queue_len=1, threshold=0.5)  # GPIO17 = ピン11
+    sleep(2)
+    print("センサー監視開始...", flush=True)
+
     display_on = True
     OFF_DELAY = 300  # 秒（例：5分）
     RECOVERY_THRESHOLD = 600  # 無反応で再起動（例：10分）
@@ -30,13 +36,7 @@ try:
     # ✅ luakit 再起動処理
     def restart_luakit():
         try:
-            # すでに luakit が起動中なら再起動しない
-            if subprocess.call(["pgrep", "-x", "luakit"]) == 0:
-                print("[SKIP] luakit already running. Skipping restart.", flush=True)
-                return
-
             subprocess.run(["pkill", "-f", "luakit"])
-            sleep(1)
             subprocess.Popen(["luakit", "-U", "http://localhost:8000"], env={"DISPLAY": ":0"})
             print("[INFO] luakit を再起動しました", flush=True)
         except Exception as e:
@@ -55,11 +55,17 @@ try:
 
     while True:
         now = time()
+        print(f"[LOOP] now={now}, last_motion={last_motion}, diff={now - last_motion}", flush=True)
 
         # ✅ イベントから1秒以内なら反応があったとみなす
         if now - last_motion < 1:
-            turn_display(True)
-            restart_luakit()
+            if not display_on:
+                turn_display(True)
+                try:
+                    if subprocess.call(["pgrep", "-x", "luakit"]) != 0:
+                        restart_luakit()
+                except Exception as e:
+                    print(f"[ERROR] luakit 起動判定失敗: {e}", flush=True)
         elif now - last_motion > OFF_DELAY:
             turn_display(False)
 

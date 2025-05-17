@@ -60,7 +60,9 @@ cd smartMirror
 2. Install dependencies:
 ```bash
 npm install
-pip3 install gpiozero
+
+sudo apt install python3-gpiozero -y
+sudo apt install python3-psutil -y
 ```
 
 3. Configure environment:
@@ -175,35 +177,34 @@ sudo systemctl daemon-reload
 sudo systemctl enable smartmirror-xinit.service
 ```
 
-3.reboot timer / 再起動タイマー  
-   ループで動かすとメモリリークが発生するので、定期的に再起動する
-   毎日AM3:00に再起動
-   `/etc/systemd/system/smartmirror-xinit-restart.timer`
+3.resource watchdog service / リソース監視サービス
+   `/etc/systemd/system/resource-watchdog.service`
 ```bash
 [Unit]
-Description=Daily restart of smartmirror-xinit.service
-
-[Timer]
-OnCalendar=*-*-* 03:00:00
-Persistent=true
-
-[Install]
-WantedBy=timers.target
- ```
-Timer Launch Script / タイマー起動スクリプト `/etc/systemd/system/smartmirror-xinit-restart.service`
-```bash
-[Unit]
-Description=Restart smartmirror-xinit.service daily
+Description=SmartMirror Resource Watchdog
+After=network.target
 
 [Service]
-Type=oneshot
-ExecStart=/bin/systemctl restart smartmirror-xinit.service
+User=snk
+ExecStart=/usr/bin/python3 /usr/local/bin/system_resource_watchdog.py
+Restart=always
+RestartSec=10
+User=snk
+
+[Install]
+WantedBy=multi-user.target
+ ```
+
+```aiignore
+cp python/system_resource_watchdog.py /usr/local/bin/
 ```
+
 set / 設定
 ```bash
+sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
-sudo systemctl enable --now smartmirror-xinit-restart.timer
-sudo systemctl list-timers | grep smartmirror-xinit # タイマーの確認
+sudo systemctl enable resource-watchdog.service
+sudo systemctl start resource-watchdog.service
 ```
 
 ※ Since I am writing this while performing actual hardware testing, there may be errors, omissions, or deficiencies.  
