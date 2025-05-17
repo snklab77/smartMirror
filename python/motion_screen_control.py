@@ -13,6 +13,7 @@ try:
     OFF_DELAY = 300  # 秒（例：5分）
     RECOVERY_THRESHOLD = 600  # 無反応で再起動（例：10分）
 
+    # ✅ 画面のON/OFFを制御する処理
     def turn_display(on: bool):
         global display_on
         if display_on == on:
@@ -25,6 +26,15 @@ try:
         os.system(cmd)
         print(f"{'ON' if on else 'OFF'} at {time()}", flush=True)
         display_on = on
+
+    # ✅ luakit 再起動処理
+    def restart_luakit():
+        try:
+            subprocess.run(["pkill", "-f", "luakit"])
+            subprocess.Popen(["luakit", "-U", "http://localhost:8000"], env={"DISPLAY": ":0"})
+            print("[INFO] luakit を再起動しました", flush=True)
+        except Exception as e:
+            print(f"[ERROR] luakit 再起動失敗: {e}", flush=True)
 
     print("センサー監視開始...", flush=True)
 
@@ -40,15 +50,10 @@ try:
         # ✅ イベントから1秒以内なら反応があったとみなす
         if now - last_motion < 1:
             turn_display(True)
+            restart_luakit()
         elif now - last_motion > OFF_DELAY:
             turn_display(False)
 
         if not display_on and (now - last_motion > RECOVERY_THRESHOLD):
             print("[INFO] 無反応時間が閾値を超過 → 自己再起動します", flush=True)
             os.execv(sys.executable, ['python3'] + sys.argv)
-
-        sleep(1)
-
-except Exception as e:
-    print(f"[ERROR] {e}", file=sys.stderr)
-    raise

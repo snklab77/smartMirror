@@ -47,6 +47,7 @@ git clone git@github.com:snklab77/smartMirror.git
 - WeatherAPI.com API key
 - Python 3.x
 - GPIO-related packages (gpiozero)
+- luakit (for web browser)
 
 ## Installation / インストール
 
@@ -86,11 +87,47 @@ sudo chmod +x /usr/local/bin/motion_screen_control.py
 sudo chmod +x /usr/local/bin/smartmirror_server.py
 ```
 
+5. set up luakit:  
+Install luakit and configration / luakit browserのインストールとconf設定
+
+```bash
+sudo apt-get install luakit
+mkdir -p ~/.config/luakit
+cp -r /etc/xdg/luakit/* ~/.config/luakit/
+sudo vi ~/.config/luakit/rc.lua
+```
+`~/.config/luakit/rc.lua`
+
+```ini
+-- last line add / 最終行に追加
+
+require "window"
+
+-- 起動時に自動でフルスクリーン化
+window.init_funcs = {
+    function(w)
+        w.fullscreen = true
+        w.toolbar.visible = false
+        w.tabbar.visible = false
+        w.sbar.visible = false
+        w.infobar.visible = false
+    end
+```
+serviceへ登録
+```bash
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable luakit-watchdog.service
+sudo systemctl start luakit-watchdog.service
+```
+
 ## Setup Guide / セットアップガイド
 
 ### 1. Boot Configuration
 Add to `/boot/firmware/config.txt`:
 ```ini
+# Enable DRM VC4 V3D driver
+# dtoverlay=vc4-kms-v3d # If a KMS version is already written, comment it out and add the FKMS version/ 元々kms版が書かれていたらコメントアウトしてfkms版を追記
 dtoverlay=vc4-fkms-v3d
 ```
 
@@ -144,6 +181,53 @@ sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl enable smartmirror-xinit.service
 ```
+3. luakit monitor service / luakitの監視サービス  
+   luakitプロセスが死んだ場合に備える復帰処置  
+
+create: `/etc/systemd/system/luakit-watchdog.service`
+```service
+[Unit]
+Description=Luakit watchdog to relaunch on crash
+After=smartmirror-xinit.service
+Requires=smartmirror-xinit.service
+
+[Service]
+User=[your username]
+ExecStart=/usr/local/bin/luakit_watchdog.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+create: `/usr/local/bin/luakit_watchdog.sh`
+
+```bash
+#!/bin/bash
+
+export DISPLAY=:0
+export LANG=ja_JP.UTF-8
+
+while true; do
+  if ! pgrep -x "luakit" > /dev/null; then
+    echo "[`date`] luakit not running. Restarting..." >> /tmp/luakit_watch.log
+    luakit -U http://localhost:8000 &
+  fi
+  sleep 10
+done
+```
+`sudo chmod +x /usr/local/bin/luakit_watchdog.sh`
+
+※ Since I am writing this while performing actual hardware testing, there may be errors, omissions, or deficiencies.  
+If you find any, please let me know.  
+Also, functionality has been verified on Raspberry Pi OS Lite 32bit.  
+Please note that it may not work on other operating systems or 64bit versions.
+
+※ 実際にテストを実機で行いながらこちらに書き写しているので間違いや漏れ、不備があるかもしれません。  
+その場合はご指摘頂ければ幸いです。  
+また、動作確認はraspberry pi OS Lite 32bitで行っています。  
+他のOSや64bit版では動作しない可能性がありますのでご注意ください。
 
 ### 4. GPIO Configuration
 
@@ -179,7 +263,7 @@ Users are advised to:
 
 ## License / ライセンス
 
-This project is released under the MIT License - feel free to modify and use it as you wish.
+This project is released under the MIT License—feel free to modify and use it as you wish.
 
 と言う事でMITライセンスにするのでお好きに改変してご利用くださいませ。
 
