@@ -42,6 +42,9 @@ try:
     def update_last_motion():
         global last_motion
         last_motion = time()
+        print(f"[EVENT] motion detected → last_motion updated: {last_motion}", flush=True)
+
+    pir.when_motion = update_last_motion
     pir.when_no_motion = update_last_motion
 
     while True:
@@ -57,3 +60,9 @@ try:
         if not display_on and (now - last_motion > RECOVERY_THRESHOLD):
             print("[INFO] 無反応時間が閾値を超過 → 自己再起動します", flush=True)
             os.execv(sys.executable, ['python3'] + sys.argv)
+
+        sleep(1)
+
+except Exception as e:
+    print(f"[ERROR] {e}", file=sys.stderr)
+    raise
