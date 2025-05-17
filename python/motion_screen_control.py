@@ -30,7 +30,13 @@ try:
     # ✅ luakit 再起動処理
     def restart_luakit():
         try:
+            # すでに luakit が起動中なら再起動しない
+            if subprocess.call(["pgrep", "-x", "luakit"]) == 0:
+                print("[SKIP] luakit already running. Skipping restart.", flush=True)
+                return
+
             subprocess.run(["pkill", "-f", "luakit"])
+            sleep(1)
             subprocess.Popen(["luakit", "-U", "http://localhost:8000"], env={"DISPLAY": ":0"})
             print("[INFO] luakit を再起動しました", flush=True)
         except Exception as e:

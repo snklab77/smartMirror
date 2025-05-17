@@ -186,6 +186,7 @@ Requires=smartmirror-xinit.service
 
 [Service]
 User=[your username]
+**ExecStartPre=/bin/sleep 10** # luakit自体が起動するまで待機
 ExecStart=/usr/local/bin/luakit_watchdog.sh
 Restart=always
 RestartSec=5
@@ -207,6 +208,12 @@ while true; do
     echo "[`date`] luakit not running. Restarting..." >> /tmp/luakit_watch.log
     luakit -U http://localhost:8000 &
   fi
+  # Check memory usage
+  mem=$(free -m | awk '/^Mem:/ { print $3 }')
+  if [ "$mem" -gt 400 ]; then
+    echo "[`date`] [WARN] memory usage high (${mem}MB) → restarting luakit" >> /tmp/luakit_watch.log    pkill -f luakit
+    luakit -U http://localhost:8000 &
+  fi
   sleep 10
 done
 ```
@@ -219,7 +226,36 @@ sudo systemctl daemon-reload
 sudo systemctl enable luakit-watchdog.service
 sudo systemctl start luakit-watchdog.service
 ```
+4.reboot timer / 再起動タイマー  
+   ループで動かすとメモリリークが発生するので、定期的に再起動する
+   毎日AM3:00に再起動
+   `/etc/systemd/system/smartmirror-xinit-restart.timer`
+```bash
+[Unit]
+Description=Daily restart of smartmirror-xinit.service
 
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+ ```
+Timer Launch Script / タイマー起動スクリプト `/etc/systemd/system/smartmirror-xinit-restart.service`
+```bash
+[Unit]
+Description=Restart smartmirror-xinit.service daily
+
+[Service]
+Type=oneshot
+ExecStart=/bin/systemctl restart smartmirror-xinit.service
+```
+set / 設定
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now smartmirror-xinit-restart.timer
+sudo systemctl list-timers | grep smartmirror-xinit # タイマーの確認
+```
 
 ※ Since I am writing this while performing actual hardware testing, there may be errors, omissions, or deficiencies.  
 If you find any, please let me know.  
@@ -228,7 +264,9 @@ Please note that it may not work on other operating systems or 64bit versions.
 
 ※ 実際にテストを実機で行いながらこちらに書き写しているので間違いや漏れ、不備があるかもしれません。  
 その場合はご指摘頂ければ幸いです。  
-また、動作確認はraspberry pi OS Lite 32bitで行っています。  
+また、動作が不安定だったり、環境に合わない場合は再起動(luakit, raspiそのもの)タイミングや色々試行錯誤してみてください。
+
+動作確認はraspberry pi OS Lite 32bitで行っています。  
 他のOSや64bit版では動作しない可能性がありますのでご注意ください。
 
 ### 4. GPIO Configuration
