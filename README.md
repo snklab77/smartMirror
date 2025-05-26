@@ -130,20 +130,47 @@ dtoverlay=vc4-fkms-v3d
 Configure `~/.xinitrc`:
 ```sh
 #!/bin/sh
-export DISPLAY=:0
+
 export LANG=ja_JP.UTF-8
-xrandr --output HDMI-1 --rotate right  # Remove if rotation not needed / 画面回転が不要な場合は削除
-xset s off
-xset +dpms
-xset -dpms
-xset s noblank
-unclutter -idle 0 & # Hide mouse cursor / マウスカーソルを隠す
+export DISPLAY=:0
+xrandr --output HDMI-1 --rotate right
+
+xset s off     # スクリーンセーバー無効化（空白画面を防ぐ）
+xset +dpms     # DPMS（Display Power Management Signaling）を有効化
+xset -dpms     # DPMSによる自動タイマーを無効（＝手動でON/OFFを制御したい）
+xset s noblank # スクリーンブランキング（空白化）を無効にする
+
+unclutter -idle 0 &
+
 matchbox-window-manager -use_titlebar no &
-/usr/bin/python3 /usr/local/bin/motion_screen_control.py &
-/usr/bin/python3 /usr/local/bin/smartmirror_server.py &
-luakit -U http://localhost:8000
+
+# Create log directory and set up logging
+mkdir -p /home/[your home]/logs/smartmirror
+
+LOGDIR="/home/[your home]/logs/smartmirror/"
+mkdir -p "$LOGDIR"
+LOGFILE="$LOGDIR/motion-$(date +%F).log"
+SERVER_LOGFILE="$LOGDIR/server-$(date +%F).log"
+
+/usr/bin/python3 /usr/local/bin/motion_screen_control.py > "$LOGFILE" 2>&1 &
+/usr/bin/python3 /usr/local/bin/smartmirror_server.py > "$SERVER_LOGFILE" 2>&1 &
+
+
+# midori -e Fullscreen -a http://localhost:8000
+luakit -U http://localhost:8000 &
+
 sleep infinity
 ```
+
+cron job to keep logs for 7 days only (adjust based on SD capacity) 
+
+cronで７日分のみログを保持するように設定します。(SDの容量と相談)
+
+```bash
+crontab -e
+0 3 * * * find /home/[your home]/logs/smartmirror -name "*.log" -mtime +7 -delete
+```
+
 
 ### 3. Autostart Service
 
@@ -185,11 +212,10 @@ Description=SmartMirror Resource Watchdog
 After=network.target
 
 [Service]
-User=snk
+User=[your username]
 ExecStart=/usr/bin/python3 /usr/local/bin/system_resource_watchdog.py
 Restart=always
 RestartSec=10
-User=snk
 
 [Install]
 WantedBy=multi-user.target
