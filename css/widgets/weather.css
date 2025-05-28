@@ -3,7 +3,8 @@
     padding: 1rem;
     touch-action: none;
     font-weight: 600;
-    transform: scale(1.3) translate(1%, 5%);
+    scale: 1.4;
+    translate: 1% 5%;
     transform-origin: bottom left;
 }
 
