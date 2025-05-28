@@ -1,12 +1,20 @@
 .weather-widget {
     position: absolute;
     padding: 1rem;
+    touch-action: none;
+    font-weight: 600;
+    transform: scale(1.3) translate(1%, 5%);
+    transform-origin: bottom left;
+}
+
+.weather-widget-inner {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2rem;
-    touch-action: none;
+    font-weight: 600;
 }
+
 
 /* デフォルト位置のクラス */
 .weather-widget:not(.dragged) {
@@ -32,8 +40,7 @@
 }
 
 .current-weather .temp-range {
-    font-size: 3em;  /* より大きなサイズに */
-    font-weight: 400;
+    font-size: 3em; /* より大きなサイズに */
 }
 
 .current-weather .weather-icon {
@@ -42,12 +49,12 @@
 }
 
 .current-weather .description {
-    font-size: 1.2em;
+    font-size: 1.2em
 }
 
 .weather-widget .description {
     text-align: center;
-    width: 100%;  /* 親要素の幅いっぱいに広げる */
+    width: 100%; /* 親要素の幅いっぱいに広げる */
 }
 
 /* 現在の天気と予報それぞれの天気説明に適用 */
@@ -63,7 +70,7 @@
     gap: 1rem;
     width: 100%;
     justify-content: center;
-    opacity: 0.8;  /* 下部全体を少し薄く */
+    opacity: 0.8; /* 下部全体を少し薄く */
 }
 
 /* 各予報アイテム */
@@ -102,6 +109,7 @@
     width: 100%;
     font-size: 0.8em;
 }
+
 .temperature {
     display: flex;
     justify-content: center;
@@ -109,8 +117,9 @@
 }
 
 .temp-range {
-    font-size: 1.1em;  /* または必要なサイズに調整 */
+    font-size: 1.1em; /* または必要なサイズに調整 */
 }
+
 @keyframes jellyWobble {
     0%, 100% {
         transform: scale(1);
@@ -129,10 +138,11 @@
 .weather-icon {
     width: 64px;
     height: 64px;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
+    /* filter: brightness(0) invert(1); */
+    opacity: 0.90;
     /* animation: jellyWobble 4s ease-in-out infinite;*/
 }
+
 .weather-icon.animate-pulse {
     animation: jellyWobble 4s ease-in-out 5;
 }

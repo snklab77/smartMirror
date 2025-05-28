@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Mirror</title>
-    <link rel="stylesheet" href="./css/base.css" />
-    <link rel="stylesheet" href="./css/widgets/clock.css" />
-    <link rel="stylesheet" href="./css/widgets/weather.css" />
+    <link rel="stylesheet" href="./css/base.css"/>
+    <link rel="stylesheet" href="./css/widgets/clock.css"/>
+    <link rel="stylesheet" href="./css/widgets/weather.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@200;300;400&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -23,29 +23,31 @@
     </div>
 
     <div class="widget weather-widget" id="weather-widget">
-        <div class="current-weather">
-            <img class="weather-icon" src="" alt="現在の天気">
-            <div class="temperature">
-                <span class="temp-range">--°C/--°C</span>
-            </div>
-            <div class="description">天気読み込み中...</div>
-        </div>
-        <div class="forecast">
-            <div class="forecast-item">
-                <div class="date">明日</div>
-                <img class="weather-icon" src="" alt="明日の天気">
+        <div class="weather-widget-inner">
+            <div class="current-weather">
+                <img class="weather-icon" src="" alt="現在の天気">
                 <div class="temperature">
-                    <span class="max">--°C</span>
+                    <span class="temp-range">--°C/--°C</span>
                 </div>
-                <div class="description">...</div>
+                <div class="description">天気読み込み中...</div>
             </div>
-            <div class="forecast-item">
-                <div class="date">明後日</div>
-                <img class="weather-icon" src="" alt="明後日の天気">
-                <div class="temperature">
-                    <span class="max">--°C</span>
+            <div class="forecast">
+                <div class="forecast-item">
+                    <div class="date">明日</div>
+                    <img class="weather-icon" src="" alt="明日の天気">
+                    <div class="temperature">
+                        <span class="max">--°C</span>
+                    </div>
+                    <div class="description">...</div>
                 </div>
-                <div class="description">...</div>
+                <div class="forecast-item">
+                    <div class="date">明後日</div>
+                    <img class="weather-icon" src="" alt="明後日の天気">
+                    <div class="temperature">
+                        <span class="max">--°C</span>
+                    </div>
+                    <div class="description">...</div>
+                </div>
             </div>
         </div>
     </div>
