@@ -138,7 +138,7 @@
 .weather-icon {
     width: 64px;
     height: 64px;
-    /* filter: brightness(0) invert(1); */
+    filter: brightness(0) invert(1) contrast(2) drop-shadow(0 0 8px white);
     opacity: 0.90;
     /* animation: jellyWobble 4s ease-in-out infinite;*/
 }
